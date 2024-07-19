@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" beStrictAboutChangesToGlobalState="true"
+         beStrictAboutOutputDuringTests="true" convertErrorsToExceptions="true" convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true" timeoutForSmallTests="0"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd">
+    <testsuites>
+        <testsuite name="Unit">
+            <directory>./Unit/</directory>
+        </testsuite>
+    </testsuites>
+    <logging>
+        <junit outputFile="Build/Artifacts/Reports/PhpUnit/junit.xml"/>
+    </logging>
+    <php>
+        <ini name="date.timezone" value="Europe/Berlin"/>
+        <ini name="error_reporting" value="E_ALL &amp; ~E_DEPRECATED"/>
+        <env name="FLOW_REWRITEURLS" value="1"/>
+    </php>
+</phpunit>
