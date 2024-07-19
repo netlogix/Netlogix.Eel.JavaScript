@@ -1,0 +1,22 @@
+{
+    "name": "netlogix/eel-javascript",
+    "description": "Neos Eel Helper to embed inline JavaScript",
+    "type": "neos-package",
+    "license": "MIT",
+    "require": {
+        "neos/eel": "^7.3 || ^8.3",
+        "neos/flow": "^7.3 || ^8.3",
+        "neos/fusion": "^7.3 || ^8.3",
+        "matthiasmullie/minify": "^1.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "Netlogix\\Eel\\JavaScript\\": "Classes/"
+        }
+    },
+    "extra": {
+        "neos": {
+            "package-key": "Netlogix.Eel.JavaScript"
+        }
+    }
+}
