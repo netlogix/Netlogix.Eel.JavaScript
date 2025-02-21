@@ -9,6 +9,7 @@ use Neos\Eel\ProtectedContextAwareInterface;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Core\Bootstrap;
 use Neos\Flow\ResourceManagement\Streams\ResourceStreamWrapper;
+use Neos\Neos\ResourceManagement\NodeTypesStreamWrapper;
 use ReflectionClass;
 use function array_keys;
 use function array_reduce;
@@ -52,17 +53,27 @@ final class JavaScriptHelper implements ProtectedContextAwareInterface
      */
     private static function resolvePath(string $path): string
     {
-        if (strpos($path, 'resource://') !== 0) {
-            return $path;
+        if (strpos($path, 'resource://') === 0) {
+            $streamWrapper = Bootstrap::$staticObjectManager->get(ResourceStreamWrapper::class);
+            $reflectionClass = new ReflectionClass($streamWrapper);
+
+            $method = $reflectionClass->getMethod('evaluateResourcePath');
+            $method->setAccessible(true);
+
+            return $method->invoke($streamWrapper, $path);
         }
 
-        $streamWrapper = Bootstrap::$staticObjectManager->get(ResourceStreamWrapper::class);
-        $reflectionClass = new ReflectionClass($streamWrapper);
+        if (strpos($path, 'nodetypes://') === 0) {
+            $streamWrapper = Bootstrap::$staticObjectManager->get(NodeTypesStreamWrapper::class);
+            $reflectionClass = new ReflectionClass($streamWrapper);
 
-        $method = $reflectionClass->getMethod('evaluateResourcePath');
-        $method->setAccessible(true);
+            $method = $reflectionClass->getMethod('evaluateNodeTypesPath');
+            $method->setAccessible(true);
 
-        return $method->invoke($streamWrapper, $path);
+            return $method->invoke($streamWrapper, $path);
+        }
+
+        return $path;
     }
 
     public function allowsCallOfMethod($methodName): bool
